@@ -6,7 +6,11 @@ from urllib.parse import urlencode
 from tabulate import tabulate
 import pymongo
 from tqdm import tqdm
-import click
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+app.config['ENV'] = 'development'
+app.config['DEBUG'] = True
 
 db_ip = ""
 hash_ip = ""
@@ -42,23 +46,20 @@ def create_params(rounds, text):
     return {'rounds': int(rounds), 'text': str(text)}
 
 
-result_set = []
-
-
-@click.command()
-@click.option("--rounds", default = 4)
-@click.option("--attribute", default = "Language")
-@click.option("--key", default = "ar")
-def origin(rounds, attribute, key):
+@app.route('/hash-client/run')
+def origin():
+    result_set = []
+    rounds = request.args.get('rounds', default = 10, type = int)
+    attribute = request.args.get('attribute', default = "Language", type = str)
+    key = request.args.get('key', default = "ar", type = str)
     for x in tqdm(mycol.find({attribute: key})):
         country = str(x["Country Name"])
         response = requests.get(get_url_with_params(p = create_params(rounds, country)))
         js = json.loads(response.text)
         sub_list = [str(country), str(js["hash"])]
         result_set.append(sub_list)
-    print()
-    print(tabulate(result_set, headers = ['Country', 'Hash'], tablefmt = "html"))
+    return tabulate(result_set, headers = ['Country', 'Hash'], tablefmt = "html")
 
 
-if __name__ == '__main__':
-    origin()
+if __name__ == "__main__":
+    app.run(host = "0.0.0.0", port = 80)
