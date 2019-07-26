@@ -22,9 +22,8 @@ else:
     db_ip = "localhost"
     hash_ip = "localhost"
 
-db_endpoint = "mongodb://dev:fsx12amir@" + db_ip + "/dev"
+db_endpoint = "mongodb://dev:password@" + db_ip + "/dev"
 hash_endpoint = "http://" + hash_ip + "/hash"
-# hash_endpoint = "http://hash-service.eastus2.azurecontainer.io/hash"
 
 
 myclient = pymongo.MongoClient(db_endpoint)
