@@ -1,15 +1,25 @@
 import requests
 import json
+import platform
 import urllib.parse as urlparse
 from urllib.parse import urlencode
+from tabulate import tabulate
 import pymongo
 from tqdm import tqdm
+import click
 
-db_ip = "192.168.100.118"
-hash_ip = "192.168.100.118"
+db_ip = ""
+hash_ip = ""
 
-db_endpoint = "mongodb://dev:fsx12amir@"+db_ip+"/dev"
-hash_endpoint = "http://"+hash_ip+"/hash"
+if platform.system() == 'Windows':
+    db_ip = "192.168.100.118"
+    hash_ip = "192.168.100.118"
+else:
+    db_ip = "localhost"
+    hash_ip = "localhost"
+
+db_endpoint = "mongodb://dev:fsx12amir@" + db_ip + "/dev"
+hash_endpoint = "http://" + hash_ip + "/hash"
 # hash_endpoint = "http://hash-service.eastus2.azurecontainer.io/hash"
 
 
@@ -28,12 +38,27 @@ def get_url_with_params(p):
     return url
 
 
-def create_params(text):
-    return {'rounds': '10', 'text': str(text)}
+def create_params(rounds, text):
+    return {'rounds': int(rounds), 'text': str(text)}
 
 
-for x in tqdm(mycol.find()):
-    country = str(x["Country Name"])
-    response = requests.get(get_url_with_params(p = create_params(country)))
-    js = json.loads(response.text)
-    # print(country + " :: " + js["hash"])
+result_set = []
+
+
+@click.command()
+@click.option("--rounds", default = 4)
+@click.option("--attribute", default = "Language")
+@click.option("--key", default = "ar")
+def origin(rounds, attribute, key):
+    for x in tqdm(mycol.find({attribute: key})):
+        country = str(x["Country Name"])
+        response = requests.get(get_url_with_params(p = create_params(rounds, country)))
+        js = json.loads(response.text)
+        sub_list = [str(country), str(js["hash"])]
+        result_set.append(sub_list)
+    print()
+    print(tabulate(result_set, headers = ['Country', 'Hash'], tablefmt = "html"))
+
+
+if __name__ == '__main__':
+    origin()
