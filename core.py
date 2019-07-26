@@ -14,6 +14,7 @@ app.config['DEBUG'] = True
 
 db_ip = ""
 hash_ip = ""
+hash_port = ":5000"
 
 if platform.system() == 'Windows':
     db_ip = "192.168.100.118"
@@ -23,7 +24,7 @@ else:
     hash_ip = "localhost"
 
 db_endpoint = "mongodb://dev:password@" + db_ip + "/dev"
-hash_endpoint = "http://" + hash_ip + "/hash"
+hash_endpoint = "http://" + hash_ip + hash_port + "/hash"
 
 
 myclient = pymongo.MongoClient(db_endpoint)
