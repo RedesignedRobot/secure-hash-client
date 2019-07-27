@@ -65,7 +65,7 @@ def origin():
 def test():
     dblist = myclient.list_database_names()
     if "dev" in dblist:
-        return "Connected to dev DB"
+        return str("Connected to dev DB :: "+db_endpoint)
     else:
         return "<b>Cannot connect to DB</b>"
 
