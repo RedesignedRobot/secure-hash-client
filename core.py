@@ -17,8 +17,8 @@ hash_ip = ""
 hash_port = ":5000"
 
 if platform.system() == 'Windows':
-    db_ip = "192.168.100.119"
-    hash_ip = "192.168.100.119"
+    db_ip = "192.168.100.122"
+    hash_ip = "192.168.100.122"
 else:
     db_ip = "127.0.0.1"
     hash_ip = "127.0.0.1"
