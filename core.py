@@ -6,7 +6,7 @@ from urllib.parse import urlencode
 from tabulate import tabulate
 import pymongo
 from tqdm import tqdm
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 app = Flask(__name__)
 app.config['ENV'] = 'development'
@@ -23,7 +23,8 @@ else:
     db_ip = "localhost"
     hash_ip = "localhost"
 
-db_endpoint = "mongodb://dev:password@" + db_ip + "/dev"
+db_endpoint_auth = "mongodb://dev:password@" + db_ip + "/dev"
+db_endpoint = "mongodb://" + db_ip + "/dev"
 hash_endpoint = "http://" + hash_ip + hash_port + "/hash"
 
 
