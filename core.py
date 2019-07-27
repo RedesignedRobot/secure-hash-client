@@ -65,7 +65,7 @@ def origin():
 def test():
     dblist = myclient.list_database_names()
     if "dev" in dblist:
-        print("The database exists.")
+        return "Connected to dev DB"
     else:
         return "<b>Cannot connect to DB</b>"
 
