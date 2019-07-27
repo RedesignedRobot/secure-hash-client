@@ -20,8 +20,8 @@ if platform.system() == 'Windows':
     db_ip = "192.168.100.119"
     hash_ip = "192.168.100.119"
 else:
-    db_ip = "localhost"
-    hash_ip = "localhost"
+    db_ip = "127.0.0.1"
+    hash_ip = "127.0.0.1"
 
 db_endpoint_auth = "mongodb://dev:password@" + db_ip + "/dev"
 db_endpoint = "mongodb://" + db_ip + "/dev"
