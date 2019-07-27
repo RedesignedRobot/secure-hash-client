@@ -65,9 +65,17 @@ def origin():
 def test():
     dblist = myclient.list_database_names()
     if "dev" in dblist:
-        return str("Connected to dev DB :: "+db_endpoint)
+        return str("Connected to dev DB :: " + db_endpoint)
     else:
         return "<b>Cannot connect to DB</b>"
+
+
+@app.route('/hash-client/env')
+def env():
+    final_env = []
+    final_env.append(['Hash Endpoint', str(hash_endpoint)])
+    final_env.append(['DB Endpoint', str(db_endpoint)])
+    return tabulate(final_env, headers = ['Key', 'Value'], tablefmt = "html")
 
 
 if __name__ == "__main__":
