@@ -12,16 +12,16 @@ app = Flask(__name__)
 app.config['ENV'] = 'development'
 app.config['DEBUG'] = True
 
-db_ip = ""
-hash_ip = ""
+db_ip = "192.168.100.122"
+hash_ip = "localhost"
 hash_port = ":5000"
 
-if platform.system() == 'Windows':
-    db_ip = "192.168.100.122"
-    hash_ip = "192.168.100.122"
-else:
-    db_ip = "127.0.0.1"
-    hash_ip = "127.0.0.1"
+# if platform.system() == 'Windows':
+#     db_ip = "192.168.100.122"
+#     hash_ip = "192.168.100.122"
+# else:
+#     db_ip = "127.0.0.1"
+#     hash_ip = "127.0.0.1"
 
 db_endpoint_auth = "mongodb://dev:password@" + db_ip + "/dev"
 db_endpoint = "mongodb://" + db_ip + "/dev"
