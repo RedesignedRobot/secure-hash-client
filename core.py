@@ -17,8 +17,8 @@ hash_ip = ""
 hash_port = ":5000"
 
 if platform.system() == 'Windows':
-    db_ip = "192.168.100.118"
-    hash_ip = "192.168.100.118"
+    db_ip = "192.168.100.119"
+    hash_ip = "192.168.100.119"
 else:
     db_ip = "localhost"
     hash_ip = "localhost"
@@ -26,7 +26,6 @@ else:
 db_endpoint_auth = "mongodb://dev:password@" + db_ip + "/dev"
 db_endpoint = "mongodb://" + db_ip + "/dev"
 hash_endpoint = "http://" + hash_ip + hash_port + "/hash"
-
 
 myclient = pymongo.MongoClient(db_endpoint)
 mydb = myclient["dev"]
@@ -60,6 +59,15 @@ def origin():
         sub_list = [str(country), str(js["hash"])]
         result_set.append(sub_list)
     return tabulate(result_set, headers = ['Country', 'Hash'], tablefmt = "html")
+
+
+@app.route('/hash-client/test')
+def test():
+    dblist = myclient.list_database_names()
+    if "dev" in dblist:
+        print("The database exists.")
+    else:
+        return "<b>Cannot connect to DB</b>"
 
 
 if __name__ == "__main__":
